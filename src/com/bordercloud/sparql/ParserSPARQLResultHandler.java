@@ -135,10 +135,9 @@ public class ParserSPARQLResultHandler extends DefaultHandler {
 
   @Override
   public void characters(char[] ch,int start, int length)  throws SAXException{  
-        String lecture = new String(ch,start,length); 
         if(_cellCurrent != null && _buffer != null)
         {
-          _buffer.append(lecture);
+          _buffer.append(ch,start,length);
         }
   }
   

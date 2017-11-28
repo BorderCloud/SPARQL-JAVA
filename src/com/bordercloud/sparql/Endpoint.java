@@ -377,8 +377,11 @@ public class Endpoint {
         .setMaxConnPerRoute(20)
         .setMaxConnTotal(100)
         .build();
+
       try {
         HttpGet httpget = new HttpGet(url);
+
+        httpget.setHeader("Content-Type", "application/sparql-results+xml; charset=UTF-8");
 
         //System.out.println("Executing request " + httpget.getRequestLine());
         CloseableHttpResponse response = httpclient.execute(httpget);
@@ -391,7 +394,7 @@ public class Endpoint {
 
           //System.out.println("----------------------------------------");
           //System.out.println(response.getStatusLine());
-          _response = EntityUtils.toString(entity);
+          _response = EntityUtils.toString(entity,"UTF-8");
           //EntityUtils.consume(entity);
         } 
         finally {
@@ -482,10 +485,12 @@ public class Endpoint {
         .build();
       try {
         HttpPost httpPost = new HttpPost(urlStr);
+        httpPost.setHeader("Content-Type", "application/sparql-results+xml; charset=UTF-8");
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
         nvps.add(new BasicNameValuePair(parameter, query));
-        httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+        httpPost.setEntity(new UrlEncodedFormEntity(nvps,"UTF-8"));
         CloseableHttpResponse response2 = httpclient.execute(httpPost);
+        
 
         try {
           //System.out.println(response2.getStatusLine());

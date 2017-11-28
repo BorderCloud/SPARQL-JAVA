@@ -59,6 +59,13 @@ public class Main {
                     "where {"
                     + "  ?x ?y ?z . "
                     + "} LIMIT 5";
+            
+            String querySelect2 = "SELECT ?human ?humanLabel \n"
+            		+ " WHERE { \n"
+            		+ " ?human wdt:P31 wd:Q5 . #find humans \n"
+            		+ " ?human rdf:type wdno:P40 . #with at least one P40 (child) statement defined to be \"no value\" \n"
+            		+ " SERVICE wikibase:label { bd:serviceParam wikibase:language \"ru\" } \n"
+            		+ "} LIMIT 100 ";
 
             System.out.println("Query : ");
             System.out.println(querySelect);
@@ -68,6 +75,7 @@ public class Main {
             System.out.println("Endpoint : " + endpoint2);
             System.out.println("");
             System.out.println("Result : ");
+         
             Endpoint sp2 = new Endpoint(endpoint2, false);
             HashMap<String, HashMap> rs2 = sp2.query(querySelect);
             printResult(rs2, 30);
@@ -81,12 +89,23 @@ public class Main {
             sp3.setMethodHTTPRead("GET");
             HashMap<String, HashMap> rs3 = sp3.query(querySelect);
 
-            printResult(rs3, 30);
+            printResult(rs3, 30);        
+            
+            String endpoint4 = "https://query.wikidata.org/sparql";
+            System.out.println("");
+            System.out.println("Endpoint : " + endpoint4);
+            System.out.println("");
+            System.out.println("Result : ");
+            Endpoint sp4 = new Endpoint(endpoint4, false);
+            sp4.setMethodHTTPRead("GET");
+            HashMap<String, HashMap> rs4 = sp4.query(querySelect2);
+
+            printResult(rs4, 30);
 
         } catch (EndpointException eex) {
             System.out.println(eex);
             eex.printStackTrace();
-        }
+        } 
     }
 
     public static void printResult(HashMap<String, HashMap> rs, int size) {
