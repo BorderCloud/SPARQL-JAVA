@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Karima Rafes.
+ * Copyright 2019 Karima Rafes.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,21 +29,29 @@ package com.bordercloud.sparql;
  */
 public class EndpointException extends Exception {
   Endpoint _endpoint;
+  String _response;
+  Integer _httpcode;
 
-  public EndpointException(Endpoint endpoint, String message) {
+  public EndpointException(
+          Endpoint endpoint,
+          String message,
+          String response,
+          Integer httpcode
+          ) {
     super(message);
+
+    _endpoint = endpoint;
+    _response = response;
+    _httpcode = httpcode;
   }   
 
   public String getMessage()
   {
     return 
-      //todo
-      //"Error query  : " ._endpoint.getQuery()."\n" .
-      //  "Error endpoint: " ._endpoint.getEn."\n" .
-      //  "Error http_response_code: " .$httpcode."\n" .
-      //  "Error message: " .$response."\n";      
-      //  "Error data: " .print_r($data,true)."\n";    
-      //+ 
-      super.getMessage();
+      "Error query  : " + _endpoint.getQuery() + "\n" +
+      "Error endpoint: " + _endpoint.getEndpoint() + "\n" +
+      "Error http_response_code: " + _httpcode + "\n" +
+      "Error message: " + _response + "\n" +
+      "Error data: \n" + super.getMessage() + "\n" ;
   }
 }

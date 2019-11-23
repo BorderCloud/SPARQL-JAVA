@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Karima Rafes.
+ * Copyright 2019 Karima Rafes.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -75,8 +75,9 @@ public class Main {
             System.out.println("Endpoint : " + endpoint2);
             System.out.println("");
             System.out.println("Result : ");
-         
-            Endpoint sp2 = new Endpoint(endpoint2, false);
+
+            Endpoint sp2 = new Endpoint(endpoint2, true,false);
+            sp2.setUserAgentRequestHeader("My client SPARQL 1.0");
             HashMap<String, HashMap> rs2 = sp2.query(querySelect);
             printResult(rs2, 30);
 
@@ -85,18 +86,18 @@ public class Main {
             System.out.println("Endpoint : " + endpoint3);
             System.out.println("");
             System.out.println("Result : ");
-            Endpoint sp3 = new Endpoint(endpoint3, false);
+            Endpoint sp3 = new Endpoint(endpoint3, true);
             sp3.setMethodHTTPRead("GET");
             HashMap<String, HashMap> rs3 = sp3.query(querySelect);
 
-            printResult(rs3, 30);        
-            
+            printResult(rs3, 30);
+
             String endpoint4 = "https://query.wikidata.org/sparql";
             System.out.println("");
             System.out.println("Endpoint : " + endpoint4);
             System.out.println("");
             System.out.println("Result : ");
-            Endpoint sp4 = new Endpoint(endpoint4, false);
+            Endpoint sp4 = new Endpoint(endpoint4, true);
             sp4.setMethodHTTPRead("GET");
             HashMap<String, HashMap> rs4 = sp4.query(querySelect2);
 

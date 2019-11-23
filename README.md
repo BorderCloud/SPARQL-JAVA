@@ -61,7 +61,8 @@ import com.bordercloud.sparql.Endpoint;
 
 Test with DBpedia and Wikidata :
 ```
-java -jar "SPARQL-JAVA.jar" 
+cd dist/
+java -classpath  lib/*:SPARQL-JAVA.jar com.bordercloud.sparql.Main
 ```
 Source of Main Class 
 ``` java
@@ -104,7 +105,8 @@ public class Main {
             System.out.println("Endpoint : "+endpoint2);       
             System.out.println("");
             System.out.println("Result : ");
-            Endpoint sp2 = new Endpoint(endpoint2, false);
+            Endpoint sp2 = new Endpoint(endpoint2, true);
+            //sp2.setUserAgentRequestHeader("My client SPARQL 1.0");
             HashMap<String, HashMap> rs2 = sp2.query(querySelect);
             printResult(rs2,30);          
             
@@ -113,7 +115,7 @@ public class Main {
             System.out.println("Endpoint : "+endpoint3);       
             System.out.println(""); 
             System.out.println("Result : ");
-            Endpoint sp3 = new Endpoint( endpoint3, false);
+            Endpoint sp3 = new Endpoint( endpoint3, true);
             sp3.setMethodHTTPRead("GET");
             HashMap<String, HashMap> rs3 =  sp3.query(querySelect);
 
@@ -145,3 +147,6 @@ public class Main {
     }
 }
 ```
+
+## Update
++ 2019-11-23 Fix bugs and add debug tools

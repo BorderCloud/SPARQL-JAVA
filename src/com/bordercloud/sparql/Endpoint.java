@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Karima Rafes.
+ * Copyright 2019 Karima Rafes.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -90,6 +90,13 @@ public class Endpoint {
   private boolean _debug;
 
   /**
+   * last SPARQL query
+   * @access private
+   * @var String
+   */
+  private String _query;
+
+  /**
    * in the constructor set the right to write or not in the store
    * @access private
    * @var bool
@@ -146,6 +153,8 @@ public class Endpoint {
   private DefaultHandler _handler;
   private String _response;
 
+  private String _userAgent = "BorderCloud/SPARQL-JAVA 1.0";
+
   public Endpoint(
     String endpoint
     ) {
@@ -179,6 +188,17 @@ public class Endpoint {
     Integer proxy_port = 0;
 
     init(endpoint, readOnly, debug, proxy_host, proxy_port);
+
+    if(_debug) {
+      java.util.logging.Logger.getLogger("org.apache.http.wire").setLevel(java.util.logging.Level.FINEST);
+      java.util.logging.Logger.getLogger("org.apache.http.headers").setLevel(java.util.logging.Level.FINEST);
+
+      System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+      System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
+      System.setProperty("org.apache.commons.logging.simplelog.log.httpclient.wire", "debug");
+      System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "debug");
+      System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http.headers", "debug");
+    }
   }
 
   public Endpoint(
@@ -256,7 +276,7 @@ public class Endpoint {
 
   /**
    * Set the server password
-   * @param string $password : server password
+   * @param password : server password
    * @access public
    */
   public void setPassword(String password) {
@@ -274,7 +294,7 @@ public class Endpoint {
 
   /**
    * Set the server login
-   * @param string $login : server login
+   * @param login : server login
    * @access public
    */
   public void setLogin(String login) {
@@ -290,14 +310,29 @@ public class Endpoint {
     return _login;
   }
 
+  public String  getQuery() {
+    return _query;
+  }
+  public String  getEndpoint() {
+    return _endpoint;
+  }
+
   public String  getResponse() {
     return _response;
   }
 
+  /**
+   * Set the User-Agent request header
+   */
+  public void setUserAgentRequestHeader(String userAgent) {
+    _userAgent = userAgent;
+  }
+
   public HashMap<String, HashMap> query(String query) 
     throws EndpointException  {
+    _query = query;
     _handler = null;
-    _response= null;
+    _response = null;
     String param = _nameParameterQueryRead;
     if (query.indexOf("INSERT") > -1 || query.indexOf("insert")> -1 ||
       query.indexOf("DELETE") > -1 || query.indexOf("delete")> -1 ||
@@ -316,7 +351,7 @@ public class Endpoint {
     }
   }
 
-  private  HashMap<String, HashMap> getResult() {
+  private  HashMap<String, HashMap> getResult() throws EndpointException {
     //parse the message
     _handler = new ParserSPARQLResultHandler();
 
@@ -324,12 +359,22 @@ public class Endpoint {
       _parser.parse(new InputSource(new StringReader(_response)), _handler);
     } 
     catch (SAXException e) {
-        System.out.println(e.getMessage());
-        e.printStackTrace();
+//        System.out.println(e.getMessage());
+//        e.printStackTrace();
+      throw new EndpointException(
+              this,
+              e.getMessage(),
+              _response,
+              200);
     } 
     catch (IOException e) {
-        System.out.println(e.getMessage());
-        e.printStackTrace();
+//        System.out.println(e.getMessage());
+//        e.printStackTrace();
+      throw new EndpointException(
+              this,
+              e.getMessage(),
+              _response,
+              200);
     }
 
     if (_handler != null) {
@@ -341,7 +386,7 @@ public class Endpoint {
 
   /**
    * Set the method HTTP to read
-   * @param string $method : HTTP method (GET or POST) for reading data (by default is POST)
+   * @param method : HTTP method (GET or POST) for reading data (by default is POST)
    * @access public
    */
   public void setMethodHTTPRead(String method) {
@@ -350,7 +395,7 @@ public class Endpoint {
 
   /**
    * Set the method HTTP to write
-   * @param string $method : HTTP method (GET or POST) for writing data (by default is POST)
+   * @param method : HTTP method (GET or POST) for writing data (by default is POST)
    * @access public
    */
   public void setMethodHTTPWrite(String method) {
@@ -381,21 +426,27 @@ public class Endpoint {
       try {
         HttpGet httpget = new HttpGet(url);
 
-        httpget.setHeader("Content-Type", "application/sparql-results+xml; charset=UTF-8");
+        httpget.setHeader("Accept", "application/sparql-results+xml; charset=UTF-8");
+        httpget.setHeader("User-Agent", _userAgent);
 
         //System.out.println("Executing request " + httpget.getRequestLine());
         CloseableHttpResponse response = httpclient.execute(httpget);
         try {
-          statusCode = response.getStatusLine().getStatusCode() ;
-          if ( statusCode < 200 || statusCode >= 300) {
-            throw new EndpointException(this, response.getStatusLine().toString());
-          }
+          statusCode = response.getStatusLine().getStatusCode();
           HttpEntity entity = response.getEntity();
 
           //System.out.println("----------------------------------------");
           //System.out.println(response.getStatusLine());
           _response = EntityUtils.toString(entity,"UTF-8");
           //EntityUtils.consume(entity);
+
+          if ( statusCode < 200 || statusCode >= 300) {
+            throw new EndpointException(this,
+                    response.getStatusLine().toString(),
+                    _response,
+                    statusCode
+                    );
+          }
         } 
         finally {
           response.close();
@@ -406,8 +457,13 @@ public class Endpoint {
       }
     } 
     catch (Exception e) {
-        System.out.println(e.getMessage());
-        e.printStackTrace();
+//        System.out.println(e.getMessage());
+//        e.printStackTrace();
+      throw new EndpointException(
+              this,
+              e.getMessage(),
+              "",
+              0);
     }
     return getResult();
   }
@@ -440,9 +496,6 @@ public class Endpoint {
         try {
           //System.out.println(response2.getStatusLine());
           statusCode = response2.getStatusLine().getStatusCode() ;
-          if ( statusCode < 200 || statusCode >= 300) {
-            throw new EndpointException(this, response2.getStatusLine().toString());
-          }
           HttpEntity entity2 = response2.getEntity();
           // do something useful with the response body
           // and ensure it is fully consumed
@@ -450,6 +503,14 @@ public class Endpoint {
 
           _response = EntityUtils.toString(entity2);
           //EntityUtils.consume(entity2);
+
+          if ( statusCode < 200 || statusCode >= 300) {
+            throw new EndpointException(this,
+                    response2.getStatusLine().toString(),
+                    _response,
+                    statusCode
+            );
+          }
         } 
         finally {
           response2.close();
@@ -460,8 +521,13 @@ public class Endpoint {
       }
     } 
     catch (Exception e) {
-        System.out.println(e.getMessage());
-        e.printStackTrace();
+//        System.out.println(e.getMessage());
+//        e.printStackTrace();
+      throw new EndpointException(
+              this,
+              e.getMessage(),
+              "",
+              0);
     }
 
     return getResult();
@@ -485,19 +551,16 @@ public class Endpoint {
         .build();
       try {
         HttpPost httpPost = new HttpPost(urlStr);
-        httpPost.setHeader("Content-Type", "application/sparql-results+xml; charset=UTF-8");
+        httpPost.setHeader("Accept", "application/sparql-results+xml; charset=UTF-8");
+        httpPost.setHeader("User-Agent", _userAgent);
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
         nvps.add(new BasicNameValuePair(parameter, query));
         httpPost.setEntity(new UrlEncodedFormEntity(nvps,"UTF-8"));
         CloseableHttpResponse response2 = httpclient.execute(httpPost);
-        
 
         try {
           //System.out.println(response2.getStatusLine());
           statusCode = response2.getStatusLine().getStatusCode() ;
-          if ( statusCode < 200 || statusCode >= 300) {
-            throw new EndpointException(this, response2.getStatusLine().toString());
-          }
 
           HttpEntity entity2 = response2.getEntity();
           // do something useful with the response body
@@ -505,6 +568,14 @@ public class Endpoint {
           //System.out.println(EntityUtils.toString(entity2));
           _response = EntityUtils.toString(entity2);
           //EntityUtils.consume(entity2);
+
+          if ( statusCode < 200 || statusCode >= 300) {
+            throw new EndpointException(this,
+                    response2.getStatusLine().toString(),
+                    _response,
+                    statusCode
+            );
+          }
         } 
         finally {
           response2.close();
@@ -513,10 +584,15 @@ public class Endpoint {
       finally {
         httpclient.close();
       }
-    } 
+    }
     catch (Exception e) {
-        System.out.println(e.getMessage());
-        e.printStackTrace();
+//        System.out.println(e.getMessage());
+//        e.printStackTrace();
+      throw new EndpointException(
+              this,
+              e.getMessage(),
+              "",
+              0);
     }
 
     return getResult();
