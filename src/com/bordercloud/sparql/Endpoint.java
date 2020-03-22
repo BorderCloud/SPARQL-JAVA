@@ -426,7 +426,8 @@ public class Endpoint {
       try {
         HttpGet httpget = new HttpGet(url);
 
-        httpget.setHeader("Accept", "application/sparql-results+xml; charset=UTF-8");
+        httpget.setHeader("Accept", "application/sparql-results+xml");
+        httpget.setHeader("Accept-Charset", "UTF-8");
         httpget.setHeader("User-Agent", _userAgent);
 
         //System.out.println("Executing request " + httpget.getRequestLine());
@@ -551,7 +552,8 @@ public class Endpoint {
         .build();
       try {
         HttpPost httpPost = new HttpPost(urlStr);
-        httpPost.setHeader("Accept", "application/sparql-results+xml; charset=UTF-8");
+        httpPost.setHeader("Accept", "application/sparql-results+xml");
+        httpPost.setHeader("Accept-Charset", "UTF-8");
         httpPost.setHeader("User-Agent", _userAgent);
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
         nvps.add(new BasicNameValuePair(parameter, query));
