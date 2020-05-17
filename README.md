@@ -26,9 +26,23 @@ import com.bordercloud.sparql.Endpoint;
                 //printResult(rs3_queryPopulationInFrance,30);
             }
 
-        } catch (EndpointException eex) {
-            System.out.println(eex);
-            eex.printStackTrace();
+
+            URI endpoint = new URI("https://query.wikidata.org/sparql");
+            String querySelect  = 
+                "PREFIX wd: <http://www.wikidata.org/entity/> \n"
+               + "PREFIX wdt: <http://www.wikidata.org/prop/direct/> \n"
+               + "select  ?population \n"
+               + "where { \n"
+               // wd:Q142{France} wdt:P1082{population} ?population .
+               + "        wd:Q142 wdt:P1082 ?population . \n"
+               + "} ";
+            SparqlClient sc = new SparqlClient(false);
+            sc.setEndpointRead(endpoint);
+            
+            sc.printLastQueryAndResult();
+        } catch (URISyntaxException | SparqlClientException e) {
+            System.out.println(e);
+            e.printStackTrace();
         }
 ```
 
@@ -149,4 +163,5 @@ public class Main {
 ```
 
 ## Update
++ 2020-05-17 Version 1.0
 + 2019-11-23 Fix bugs and add debug tools
