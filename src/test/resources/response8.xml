@@ -1,0 +1,203 @@
+<sparql xmlns="http://www.w3.org/2005/sparql-results#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd">
+    <head>
+        <variable name="lat"/>
+        <variable name="long"/>
+        <variable name="title"/>
+        <variable name="description"/>
+    </head>
+    <results distinct="false" ordered="true">
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">37.788115</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">-122.40123</literal></binding>
+            <binding name="title"><literal>Wikidata</literal></binding>
+            <binding name="description"><literal>Wikidata is a free linked database for the structured data of its Wikimedia sister projects including Wikipedia, Wikivoyage, Wikisource and others.
+                The content is available under a free license, exported using standard formats, and can be interlinked to other open data sets on the linked data web.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">42.505499</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">-71.194947</literal></binding>
+            <binding name="title"><literal>UriBurner</literal></binding>
+            <binding name="description"><literal>A data virtualization service that transforms data hosted in a variety of data spaces and formats into standards compliant Linked Data Objects for uniform access, integration and management.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">42.505499</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">-71.194936</literal></binding>
+            <binding name="title"><literal>Linked Open Data Cloud</literal></binding>
+            <binding name="description"><literal>Linked Open Data Cloud Cache provided by OpenLink Software. This is a  cluster edition of Virtuoso that hosts 30 Billion+ triples loaded from the LOD Cloud.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">52.45261</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">13.289852</literal></binding>
+            <binding name="title"><literal>DBpedia</literal></binding>
+            <binding name="description"><literal>DBpedia SPARQL Endpoint which provides access to all the Wikidpedia content that has been transformed into query-friendly Linked Open Data.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.833538</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.375708</literal></binding>
+            <binding name="title"><literal>French National Library</literal></binding>
+            <binding name="description"><literal>The data.bnf.fr project endeavours to make the data produced by Bibliothèque nationale de France (French National Library) more useful on the Web.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.712409</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.167427</literal></binding>
+            <binding name="title"><literal>Europeana Cultural Data</literal></binding>
+            <binding name="description"><literal>Europeana SPARQL Endpoint</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">41.994712</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">21.42952</literal></binding>
+            <binding name="title"><literal>LinkedDrugs Dataset</literal></binding>
+            <binding name="description"><literal>Information about Drugs, Ingredients, Makers, and Prices</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">46.067469</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">11.121882</literal></binding>
+            <binding name="title"><literal>Springer LOD</literal></binding>
+            <binding name="description"><literal>The purpose of this project is publish Springer metadata about conferences as Linked Open Data (LOD), and further enrich and link them to other available data in the LOD cloud. </literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">45.75938</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">4.831924</literal></binding>
+            <binding name="title"><literal>Data Persée</literal></binding>
+            <binding name="description"><literal>Persee.fr est un portail de diffusion de publications scientifiques, principalement dans le domaine des sciences humaines et sociales. Son positionnement est original car il assure la diffusion de collections patrimoniales (le plus ancien document diffusé date de 1840).</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">45.782167</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">4.865168</literal></binding>
+            <binding name="title"><literal>isidore.science</literal></binding>
+            <binding name="description"><literal>Dataset of search assistant in Humanities and Social Sciences</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">50.611958</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">-2.489305</literal></binding>
+            <binding name="title"><literal>HM Land Registry Open Data</literal></binding>
+            <binding name="description"><literal>HM Land Registry publishes :
+                Price paid data updated monthly, data available from 1995.
+                Transaction data updated monthly, data available from December 2011.
+                UK House Price Index downloads updated monthly, data available from January 1995.
+                HM Land Registry publish the UK House Price Index.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">41.653257</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">-0.890829</literal></binding>
+            <binding name="title"><literal>Aragon Open Data Sparql endpoint</literal></binding>
+            <binding name="description"><literal>The Open Data initiative of the Government of Aragon was created by an agreement in 2012 with the aim of creating economic value in the ICT Sector through the reuse of public information, the increase of transparency and the promotion of innovation.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.130279</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">11.580322</literal></binding>
+            <binding name="title"><literal>Linked open EP data of European Patent Office</literal></binding>
+            <binding name="description"><literal>Linked open EP data of European Patent Office uses Uniform Resource Identifiers (URIs) to identify patent applications, publications and other resources present in patent data.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">51.499364</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">-0.124751</literal></binding>
+            <binding name="title"><literal>UK Parliament</literal></binding>
+            <binding name="description"><literal>Datasets of UK Parliament</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.110133</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">-1.679932</literal></binding>
+            <binding name="title"><literal>SireneLD</literal></binding>
+            <binding name="description"><literal>Le project sireneLD vise à construire un graphe requêtable autour des données ouvertes faisant référence à des unité légales ou des établissements via leur numéro SIREN/SIRET.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.823081</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.254939</literal></binding>
+            <binding name="title"><literal>LinkedWiki</literal></binding>
+            <binding name="description"><literal>Datasets in the Linked Open Data</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.712409</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.167427</literal></binding>
+            <binding name="title"><literal>IODS</literal></binding>
+            <binding name="description"><literal>IODS</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">51.339192</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">12.382965</literal></binding>
+            <binding name="title"><literal>DBpedia Live Edition</literal></binding>
+            <binding name="description"><literal>Live edition of DBpedia that provides access to live data transformed into Linked Open Data from Wikipedia, in real-time.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.826503</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.346439</literal></binding>
+            <binding name="title"><literal>YAGO</literal></binding>
+            <binding name="description"><literal>A knowledge base extracted from Wikipedia, containing general knowledge about famous people, cities, countries, movies, organizations, etc, together with a taxonomy from WordNet.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">41.919507</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">12.488108</literal></binding>
+            <binding name="title"><literal>Scholarly Linked Open Data</literal></binding>
+            <binding name="description"><literal>ScholarlyData.org provides facilities and services to pubish you scholarly data as Linked Open Data</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">52.082862</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">4.32665</literal></binding>
+            <binding name="title"><literal>Europeana</literal></binding>
+            <binding name="description"><literal>Europeana.eu is the EU digital platform for cultural heritage. More than 3,000 institutions across Europe have contributed to Europeana.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">37.418078</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">-122.02446</literal></binding>
+            <binding name="title"><literal>Yahoo Weather API</literal></binding>
+            <binding name="description"><literal>Get up-to-date weather information for any location, including 5-day forecast, wind, atmosphere, astronomy conditions, and more. You can lookup weather by woeid, city name or lat/long.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">40.871988</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">-77.843628</literal></binding>
+            <binding name="title"><literal>AccuWeather API </literal></binding>
+            <binding name="description"><literal>RestFull api of AccuWeather, give global informations about weather of location like countries, cities or continents.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.840769</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.37648</literal></binding>
+            <binding name="title"><literal>API SNCF</literal></binding>
+            <binding name="description"><literal>sncf public transport</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.85568</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.345581</literal></binding>
+            <binding name="title"><literal>Adresse et géolocalisation des établissements d&#39;enseignement</literal></binding>
+            <binding name="description"><literal>Géolocalisation des établissements d&#39;enseignement</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">49.599188</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">6.130247</literal></binding>
+            <binding name="title"><literal>EUROPA</literal></binding>
+            <binding name="description"><literal>The European Union Open Data Portal (EU ODP) gives you access to open data published by EU institutions and bodies.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.81628</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.307274</literal></binding>
+            <binding name="title"><literal>INSEE</literal></binding>
+            <binding name="description"><literal>The National Institute of Statistics and Economic Studies is the national statistics bureau of France. It collects and publishes information about the French economy and people and carries out the periodic national census.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.712409</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.167427</literal></binding>
+            <binding name="title"><literal>Sunshine</literal></binding>
+            <binding name="description"><literal>Sunshine in cities by month or by days.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">48.712409</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">2.167427</literal></binding>
+            <binding name="title"><literal>District heating cergy cost</literal></binding>
+            <binding name="description"><literal>District Heating at Cergy cost</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">50.056263</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">14.433871</literal></binding>
+            <binding name="title"><literal>Register of rights and responsibilities of public authorities of Czechia</literal></binding>
+            <binding name="description"><literal>The register of rights and responsibilities of public authorities is one of the four base registries in Czechia. It contains data about public authorities, their rights and responsibilities and it specifies which kinds of data each public authority is responsible for.</literal></binding>
+        </result>
+        <result>
+            <binding name="lat"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">41.994712</literal></binding>
+            <binding name="long"><literal datatype="http://www.w3.org/2001/XMLSchema#decimal">21.42952</literal></binding>
+            <binding name="title"><literal>LinkedDrugs Dataset</literal></binding>
+            <binding name="description"><literal>The LinkedDrugs dataset with global drug product data. The current version of the dataset (v2.1) contains 99,235,032 RDF triples for 248,746 drug products, from 23 countries and is available for download as a dump in Turtle format.
+
+                Details: https://old.datahub.io/dataset/linked-drugs</literal></binding>
+        </result>
+    </results>
+</sparql>
