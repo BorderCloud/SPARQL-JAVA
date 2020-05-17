@@ -3,7 +3,7 @@ plugins {
     id("maven-publish")
 }
 
-group 'com.bordercloud.sparql'
+group 'com.bordercloud'
 version 1.0
 
 apply plugin: 'idea'
@@ -43,7 +43,7 @@ publishing {
     publications {
         gpr(MavenPublication) {
 
-            groupId = 'com.bordercloud.sparql'
+            groupId = 'com.bordercloud'
             artifactId = 'sparql-java'
             version = '1.0'
 
