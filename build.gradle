@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
-    id 'signing'
+//    id 'maven-publish'
+//    id 'signing'
 }
 
 group 'com.bordercloud.sparql'
@@ -85,9 +85,9 @@ dependencies {
 //    }
 //}
 
-signing {
-    sign publishing.publications.mavenJava
-}
+//signing {
+//    sign publishing.publications.mavenJava
+//}
 
 
 //javadoc {
