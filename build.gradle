@@ -44,33 +44,33 @@ publishing {
         gpr(MavenPublication) {
             from(components.java)
         }
-
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'SPARQL-JAVA'
-                description = 'Lib Java for SPARQL 1.1'
-                url = 'https://github.com/BorderCloud/SPARQL-JAVA'
-                //                properties = [
-                //                        myProp: "value",
-                //                        "prop.with.dots": "anotherValue"
-                //                ]
-                licenses {
-                    license {
-                        name = 'Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)'
-                        url = 'https://creativecommons.org/licenses/by-sa/4.0/'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'KRafes'
-                        name = 'Karima Rafes'
-                        email = 'karima.rafes@gmail.com'
-                    }
-                }
-                scm {
-                    url = 'https://github.com/BorderCloud/SPARQL-JAVA'
-                }
-            }
-        }
+//
+//        mavenJava(MavenPublication) {
+//            pom {
+//                name = 'SPARQL-JAVA'
+//                description = 'Lib Java for SPARQL 1.1'
+//                url = 'https://github.com/BorderCloud/SPARQL-JAVA'
+//                //                properties = [
+//                //                        myProp: "value",
+//                //                        "prop.with.dots": "anotherValue"
+//                //                ]
+//                licenses {
+//                    license {
+//                        name = 'Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)'
+//                        url = 'https://creativecommons.org/licenses/by-sa/4.0/'
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id = 'KRafes'
+//                        name = 'Karima Rafes'
+//                        email = 'karima.rafes@gmail.com'
+//                    }
+//                }
+//                scm {
+//                    url = 'https://github.com/BorderCloud/SPARQL-JAVA'
+//                }
+//            }
+//        }
     }
 }
