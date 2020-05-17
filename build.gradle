@@ -1,15 +1,6 @@
 plugins {
     id 'java-library'
-//    id 'maven-publish'
-//    id 'signing'
-}
-
-group 'com.bordercloud.sparql'
-version 1.0
-
-java {
-//    withJavadocJar()
-    withSourcesJar()
+    id("maven-publish")
 }
 
 apply plugin: 'idea'
@@ -35,63 +26,53 @@ dependencies {
 
 }
 
-//publishing {
-//    publications {
-//        myLibrary(MavenPublication) {
-//            from components.java
-//        }
-//
-//        mavenJava(MavenPublication) {
-//            pom {
-//                name = 'SPARQL-JAVA'
-//                description = 'Lib Java for SPARQL 1.1'
-//                url = 'https://github.com/BorderCloud/SPARQL-JAVA'
-////                properties = [
-////                        myProp: "value",
-////                        "prop.with.dots": "anotherValue"
-////                ]
-//                licenses {
-//                    license {
-//                        name = 'Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)'
-//                        url = 'https://creativecommons.org/licenses/by-sa/4.0/'
-//                    }
-//                }
-//                developers {
-//                    developer {
-//                        id = 'KRafes'
-//                        name = 'Karima Rafes'
-//                        email = 'karima.rafes@gmail.com'
-//                    }
-//                }
-//                scm {
-//                    url = 'https://github.com/BorderCloud/SPARQL-JAVA'
-//                }
-//            }
-//        }
-//    }
-//
-//    repositories {
-//        maven {
-//            name = 'myRepo'
-//            url = "file://${buildDir}/repo"
-//            
-//            name = "OSSRH"
-//            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-//            credentials = {
-//                username = System.getenv("MAVEN_USERNAME")
-//                password = System.getenv("MAVEN_PASSWORD")
-//            }
-//        }
-//    }
-//}
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/BorderCloud/SPARQL-JAVA")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
 
-//signing {
-//    sign publishing.publications.mavenJava
-//}
+            groupId = 'com.bordercloud.sparql'
+            artifactId = 'sparql-java'
+            version = '1.0'
 
+            from(components.java)
+        }
 
-//javadoc {
-//    if(JavaVersion.current().isJava9Compatible()) {
-//        options.addBooleanOption('html5', true)
-//    }
-//}
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'SPARQL-JAVA'
+                description = 'Lib Java for SPARQL 1.1'
+                url = 'https://github.com/BorderCloud/SPARQL-JAVA'
+                //                properties = [
+                //                        myProp: "value",
+                //                        "prop.with.dots": "anotherValue"
+                //                ]
+                licenses {
+                    license {
+                        name = 'Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)'
+                        url = 'https://creativecommons.org/licenses/by-sa/4.0/'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'KRafes'
+                        name = 'Karima Rafes'
+                        email = 'karima.rafes@gmail.com'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/BorderCloud/SPARQL-JAVA'
+                }
+            }
+        }
+    }
+}
