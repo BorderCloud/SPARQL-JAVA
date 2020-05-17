@@ -2,4 +2,3 @@
 .gradle
 gradlew.bat
 build
-gradle/*
