@@ -35,59 +35,55 @@ dependencies {
 
 }
 
-publishing {
-    publications {
-        myLibrary(MavenPublication) {
-            from components.java
-        }
-
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'SPARQL-JAVA'
-                description = 'Lib Java for SPARQL 1.1'
-                url = 'https://github.com/BorderCloud/SPARQL-JAVA'
-//                properties = [
-//                        myProp: "value",
-//                        "prop.with.dots": "anotherValue"
-//                ]
-                licenses {
-                    license {
-                        name = 'Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)'
-                        url = 'https://creativecommons.org/licenses/by-sa/4.0/'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'KRafes'
-                        name = 'Karima Rafes'
-                        email = 'karima.rafes@gmail.com'
-                    }
-                }
-                scm {
-                    url = 'https://github.com/BorderCloud/SPARQL-JAVA'
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            name = 'myRepo'
-            url = "file://${buildDir}/repo"
-
-
-            name = "OSSRH"
-            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            credentials = {
-                username = System.getenv("MAVEN_USERNAME")
-                password = System.getenv("MAVEN_PASSWORD")
-            }
-        }
-        
-        
-        
-    }
-}
+//publishing {
+//    publications {
+//        myLibrary(MavenPublication) {
+//            from components.java
+//        }
+//
+//        mavenJava(MavenPublication) {
+//            pom {
+//                name = 'SPARQL-JAVA'
+//                description = 'Lib Java for SPARQL 1.1'
+//                url = 'https://github.com/BorderCloud/SPARQL-JAVA'
+////                properties = [
+////                        myProp: "value",
+////                        "prop.with.dots": "anotherValue"
+////                ]
+//                licenses {
+//                    license {
+//                        name = 'Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)'
+//                        url = 'https://creativecommons.org/licenses/by-sa/4.0/'
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id = 'KRafes'
+//                        name = 'Karima Rafes'
+//                        email = 'karima.rafes@gmail.com'
+//                    }
+//                }
+//                scm {
+//                    url = 'https://github.com/BorderCloud/SPARQL-JAVA'
+//                }
+//            }
+//        }
+//    }
+//
+//    repositories {
+//        maven {
+//            name = 'myRepo'
+//            url = "file://${buildDir}/repo"
+//            
+//            name = "OSSRH"
+//            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+//            credentials = {
+//                username = System.getenv("MAVEN_USERNAME")
+//                password = System.getenv("MAVEN_PASSWORD")
+//            }
+//        }
+//    }
+//}
 
 signing {
     sign publishing.publications.mavenJava
