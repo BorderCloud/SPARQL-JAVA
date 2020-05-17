@@ -42,11 +42,6 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-
-            groupId = 'com.bordercloud'
-            artifactId = 'sparql-java'
-            version = '1.0'
-
             from(components.java)
         }
 
