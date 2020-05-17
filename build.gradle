@@ -3,6 +3,9 @@ plugins {
     id("maven-publish")
 }
 
+group 'com.bordercloud.sparql'
+version 1.0
+
 apply plugin: 'idea'
 
 apply plugin: 'java'
