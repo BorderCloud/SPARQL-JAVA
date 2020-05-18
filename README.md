@@ -1,7 +1,7 @@
 ![Gradle Package](https://github.com/BorderCloud/SPARQL-JAVA/workflows/Gradle%20Package/badge.svg)
 
 # SPARQL-JAVA
-Lib Java for SPARQL 1.1 (Very simple...)
+Client SPARQL 1.1 (very simple) for Java
 
 Usage with Gradle :
 ``` gradle
