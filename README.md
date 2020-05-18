@@ -3,7 +3,7 @@
 # SPARQL-JAVA
 Lib Java for SPARQL 1.1 (Very simple...)
 
-Usage with gradle :
+Usage with Gradle :
 ``` gradle
 apply plugin: 'java'
 apply plugin: 'application'
@@ -26,7 +26,7 @@ repositories {
     }
 }
 dependencies {
-    compile "com.bordercloud:SPARQL-JAVA:1.0.1"
+    compile "com.bordercloud:SPARQL-JAVA:1.0.2"
     
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
