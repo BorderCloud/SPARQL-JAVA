@@ -20,8 +20,8 @@ repositories {
     maven {
         url = uri("https://maven.pkg.github.com/bordercloud/SPARQL-JAVA")
         credentials {
-            username = 'USERNAME_GITHUB'
-            password = 'TOKEN_GITHUB_FOR_READ_PACKAGE'
+            username = 'YOUR_USERNAME_IN_GITHUB'
+            password = 'YOUR_TOKEN_IN_GITHUB_FOR_READING_PACKAGES'
         }
     }
 }
