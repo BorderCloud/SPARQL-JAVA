@@ -515,10 +515,10 @@ public final class SparqlClient {
                             // Waiting for a connection from connection manager
                             .setConnectionRequestTimeout(10000)
                             // Waiting for connection to establish
-                            .setConnectTimeout(5000)
+                            .setConnectTimeout(60000)
                             .setExpectContinueEnabled(false)
                             // Waiting for data
-                            .setSocketTimeout(5000)
+                            .setSocketTimeout(60000)
                             .setCookieSpec("easy")
                             .build())
                     .setMaxConnPerRoute(20)
@@ -587,9 +587,22 @@ public final class SparqlClient {
             credsProvider.setCredentials(
                     new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
                     new UsernamePasswordCredentials(login, password));
+
             CloseableHttpClient httpclient = HttpClients.custom()
                     .setDefaultCredentialsProvider(credsProvider)
                     .setRedirectStrategy(new LaxRedirectStrategy())
+                    .setDefaultRequestConfig(RequestConfig.custom()
+                            // Waiting for a connection from connection manager
+                            .setConnectionRequestTimeout(10000)
+                            // Waiting for connection to establish
+                            .setConnectTimeout(60000)
+                            .setExpectContinueEnabled(false)
+                            // Waiting for data
+                            .setSocketTimeout(60000)
+                            .setCookieSpec("easy")
+                            .build())
+                    .setMaxConnPerRoute(20)
+                    .setMaxConnTotal(100)
                     .build();
             try {
                 HttpPost httpPost = new HttpPost(endpoint);
@@ -645,9 +658,20 @@ public final class SparqlClient {
     {
         SparqlResult result = new SparqlResult();
         try {
-            CloseableHttpClient httpclient =
-                    HttpClients.custom()
+            CloseableHttpClient httpclient = HttpClients.custom()
                     .setRedirectStrategy(new LaxRedirectStrategy())
+                    .setDefaultRequestConfig(RequestConfig.custom()
+                            // Waiting for a connection from connection manager
+                            .setConnectionRequestTimeout(10000)
+                            // Waiting for connection to establish
+                            .setConnectTimeout(60000)
+                            .setExpectContinueEnabled(false)
+                            // Waiting for data
+                            .setSocketTimeout(60000)
+                            .setCookieSpec("easy")
+                            .build())
+                    .setMaxConnPerRoute(20)
+                    .setMaxConnTotal(100)
                     .build();
             try {
                 HttpPost httpPost = new HttpPost(endpoint);
