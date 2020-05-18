@@ -139,26 +139,26 @@ public class Main {
 }
 ```
 
-Usage Write with Virtuoso : 
+Example for writing in a Virtuoso database : 
 ``` java
-        endpoint = new URI("http://172.17.0.2:8890/sparql-auth/");
-        client= new SparqlClient(false);
-        client.setLogin("dba");
-        client.setPassword("dba");
-        client.setEndpointRead(endpoint);
-        client.setEndpointWrite(endpoint);
-        //check delete
-        String q = 
-                "PREFIX a: <http://example.com/test/a/>\n" +
-                "PREFIX b: <http://example.com/test/b/>\n" +
-                "DELETE DATA {\n" +
-                "   GRAPH <http://truc.fr/> {\n" +
-                "     a:A b:Name \"Test1\" .\n" +
-                "     a:A b:Name \"Test2\" .\n" +
-                "     a:A b:Name \"Test3\" .\n" +
-                "}}";
+endpoint = new URI("http://172.17.0.2:8890/sparql-auth/");
+client= new SparqlClient(false);
+client.setLogin("dba");
+client.setPassword("dba");
+client.setEndpointRead(endpoint);
+client.setEndpointWrite(endpoint);
+//check delete
+String q = 
+        "PREFIX a: <http://example.com/test/a/>\n" +
+        "PREFIX b: <http://example.com/test/b/>\n" +
+        "DELETE DATA {\n" +
+        "   GRAPH <http://truc.fr/> {\n" +
+        "     a:A b:Name \"Test1\" .\n" +
+        "     a:A b:Name \"Test2\" .\n" +
+        "     a:A b:Name \"Test3\" .\n" +
+        "}}";
 
-        SparqlResult sr1 = client.query(q);
+SparqlResult sr1 = client.query(q);
 ```
 
 See more examples with DBpedia and Wikidata in the tests.
