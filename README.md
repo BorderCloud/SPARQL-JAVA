@@ -88,26 +88,24 @@ public class Main {
                     + "PREFIX wikibase: <http://wikiba.se/ontology#>  \n"
                     + "PREFIX wd: <http://www.wikidata.org/entity/>   \n"
                     + "PREFIX wdt: <http://www.wikidata.org/prop/direct/>  \n"
-                    + " \n"
+                    + "\n"
                     + "select distinct  \n"
                     + "?lat ?long ?siteLabel ?siteDescription  \n"
                     + "?site \n"
                     + "#(replace(xsd:string(?site),  \n"
-                    + "#         \"http://www.wikidata.org/entity/\",  \n"
-                    + "#         \"https://www.wikidata.org/wiki/Special:GoToLinkedPage/enwiki/\") as ?link) \n"
                     + "(concat(xsd:string(?image),\'?width=200\') as ?newimage) \n"
                     + "where { \n"
                     + "        ?site wdt:P31/wdt:P279* wd:Q839954 .  \n"
                     + "        ?site wdt:P17 wd:Q142 . \n"
                     + "        ?site wdt:P18 ?image . \n"
                     + "   ?site p:P625 ?coord . \n"
-                    + " \n"
+                    + "\n"
                     + "          ?coord   psv:P625 ?coordValue . \n"
-                    + "        \n"
+                    + "\n"
                     + "          ?coordValue a wikibase:GlobecoordinateValue ; \n"
                     + "                        wikibase:geoLatitude ?lat ; \n"
                     + "                        wikibase:geoLongitude ?long . \n"
-                    + "   \n"
+                    + "\n"
                     + "        SERVICE wikibase:label { \n"
                     + "             bd:serviceParam wikibase:language \"en,fr\" . \n"
                     + "        } \n"
@@ -140,6 +138,7 @@ public class Main {
     }
 }
 ```
+
 Usage Write with Virtuoso : 
 ``` java
         endpoint = new URI("http://172.17.0.2:8890/sparql-auth/");
@@ -150,14 +149,14 @@ Usage Write with Virtuoso :
         client.setEndpointWrite(endpoint);
         //check delete
         String q = 
-                "    PREFIX a: <http://example.com/test/a/>\n" +
-                "    PREFIX b: <http://example.com/test/b/>\n" +
-                "    DELETE DATA {\n" +
-                "        GRAPH <http://truc.fr/> {\n" +
-                "        a:A b:Name \"Test1\" .\n" +
-                "                a:A b:Name \"Test2\" .\n" +
-                "                a:A b:Name \"Test3\" .\n" +
-                "    }}";
+                "PREFIX a: <http://example.com/test/a/>\n" +
+                "PREFIX b: <http://example.com/test/b/>\n" +
+                "DELETE DATA {\n" +
+                "   GRAPH <http://truc.fr/> {\n" +
+                "     a:A b:Name \"Test1\" .\n" +
+                "     a:A b:Name \"Test2\" .\n" +
+                "     a:A b:Name \"Test3\" .\n" +
+                "}}";
 
         SparqlResult sr1 = client.query(q);
 ```
