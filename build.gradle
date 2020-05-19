@@ -5,7 +5,7 @@ plugins {
 
 group 'com.bordercloud'
 archivesBaseName = 'SPARQL-JAVA'
-version '1.0.2'
+version '1.0.3'
 
 apply plugin: 'idea'
 
