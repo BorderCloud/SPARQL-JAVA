@@ -19,7 +19,11 @@ public class SparqlResultModelWithJSON  extends SparqlResultModel {
                 row = new HashMap<String, Object>();
                 for (String variable : this.variables) {
                     field = (HashMap<String, Object>) rowJson.get(variable);
-                    row.put(variable,field.get("value"));
+                    if (field == null) {
+                        row.put(variable,null);
+                    }else {
+                        row.put(variable,field.get("value"));
+                    }
                 }
                 rowsFinal.add(row);
             }
