@@ -9,8 +9,6 @@ version '1.0.5'
 
 apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'signing'
 
 repositories {
     mavenCentral()
@@ -43,51 +41,6 @@ task sourcesJar(type: Jar) {
 
 artifacts {
     archives javadocJar, sourcesJar
-}
-
-signing {
-    sign configurations.archives
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-            
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                name 'SPARQL-JAVA'
-                packaging 'jar'
-                // optionally artifactId can be defined here 
-                description 'Client SPARQL 1.1 (very simple) for Java.'
-                url 'https://github.com/BorderCloud/SPARQL-JAVA'
-
-                licenses {
-                    license {
-                        name = 'Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)'
-                        url = 'https://creativecommons.org/licenses/by-sa/4.0/'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'bordercloud'
-                        name = 'Karima Rafes'
-                        email = 'karima.rafes@gmail.com'
-                    }
-                }
-                scm {
-                    url = 'https://github.com/BorderCloud/SPARQL-JAVA'
-                }
-            }
-        }
-    }
 }
 
 publishing {
