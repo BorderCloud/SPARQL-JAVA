@@ -16,17 +16,9 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    
-    maven {
-        url = uri("https://maven.pkg.github.com/bordercloud/SPARQL-JAVA")
-        credentials {
-            username = 'YOUR_USERNAME_IN_GITHUB'
-            password = 'YOUR_TOKEN_IN_GITHUB_FOR_READING_PACKAGES'
-        }
-    }
 }
 dependencies {
-    compile "com.bordercloud:SPARQL-JAVA:1.0.2"
+    compile "com.bordercloud:SPARQL-JAVA:1.0.4"
     
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
