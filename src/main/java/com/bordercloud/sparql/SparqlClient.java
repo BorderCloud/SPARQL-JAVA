@@ -51,64 +51,46 @@ public final class SparqlClient {
 
     /**
      * URL of Endpoint to read
-     * @access private
-     * @var string
      */
     public URI _endpointRead = null;
 
     /**
      * URL of Endpoint to write
-     * @access private
-     * @var string
      */
     public URI _endpointWrite = null;
 
     /**
      * in the constructor set debug to true in order to get usefull output
-     * @access private
-     * @var bool
      */
     public boolean _debug = false;
 
     /**
      * in the constructor set the proxy_host if necessary
-     * @access private
-     * @var string
      */
     public String _proxyHost = null;
 
     /**
      * in the constructor set the proxy_port if necessary
-     * @access private
-     * @var int
      */
     public int _proxyPort = 0;
 
     /**
      * Parser of XML result
-     * @access private
-     * @var ParserSparqlResult
      */
     public ParserSparqlResultHandler _parserSparqlResult = null;
 
     /**
      * Name of parameter HTTP to send a query Sparql to read data.
-     * @access private
-     * @var string
      */
     public String _nameParameterQueryRead = null;
 
     /**
      * Name of parameter HTTP to send a query Sparql to write data.
-     * @access private
-     * @var string
      */
     public String _nameParameterQueryWrite = null;
 
     /**
      * Method HTTP to send a query Sparql to read data.
-     * @access private
-     * @var string
      */
     public Method _methodHTTPRead = null;
 
@@ -128,7 +110,6 @@ public final class SparqlClient {
     /**
      * Constructor of SparqlClient
      *
-     * @access public
      */
     public SparqlClient()
     {
@@ -145,7 +126,6 @@ public final class SparqlClient {
      *
      * @param debug boolean
      *            : false by default, set debug to true in order to get useful output
-     * @access public
      */
     public SparqlClient(boolean debug)
     {
@@ -166,7 +146,6 @@ public final class SparqlClient {
      *            : null by default, IP of your proxy
      * @param proxyPort int 
      *            : null by default, port of your proxy
-     * @access public
      */
     public SparqlClient(
             boolean debug,
@@ -316,9 +295,8 @@ public final class SparqlClient {
 
     /**
      * Check if the Sparql endpoint for reading is up.
-     *
+     * 
      * @return bool true if the service is up.
-     * @access public
      */
     public boolean checkEndpointRead()
     {
@@ -329,7 +307,6 @@ public final class SparqlClient {
      * Check if the Sparql endpoint for writing is up.
      *
      * @return bool true if the service is up.
-     * @access public
      */
     public boolean checkEndpointWrite()
     {

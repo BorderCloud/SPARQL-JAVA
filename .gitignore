@@ -2,3 +2,5 @@
 .gradle
 gradlew.bat
 build
+gradle.properties
+generateSignin.txt
