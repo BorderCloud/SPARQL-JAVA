@@ -8,8 +8,7 @@ Usage with Gradle :
 apply plugin: 'java'
 apply plugin: 'application'
 
-// This comes out to package + '.' + mainClassName
-mainClassName = 'MainClass1'
+mainClassName = 'Main'
 
 group 'org.example'
 version '1.0-SNAPSHOT'
@@ -18,9 +17,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile "com.bordercloud:SPARQL-JAVA:1.0.4"
-    
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile "com.bordercloud:SPARQL-JAVA:1.0.7"
 }
 ```
 
@@ -31,7 +28,7 @@ import com.bordercloud.sparql.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class MainClass1 {
+public class Main {
     public static void main(String[] args) {
         try {
             URI endpoint = new URI("https://query.wikidata.org/sparql");
