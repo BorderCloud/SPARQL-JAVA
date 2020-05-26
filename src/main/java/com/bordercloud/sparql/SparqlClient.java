@@ -444,32 +444,36 @@ public final class SparqlClient {
     }
     
     public SparqlResult queryRead(String query, MimeType typeOutput, String typeCharset) throws SparqlClientException {
-        if (_methodHTTPRead == Method.POST) {
-            if (_login != null && _password != null) {
-                return sendQueryPOSTwithAuth(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset, _login, _password);
+        if (_endpointRead != null) {
+            if (_methodHTTPRead == Method.POST) {
+                if (_login != null && _password != null) {
+                    return sendQueryPOSTwithAuth(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset, _login, _password);
+                } else {
+                    return sendQueryPOST(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset);
+                }
             } else {
-                return sendQueryPOST(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset);
+                //todo sendQueryGETwithAuth ???
+                return sendQueryGET(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset);
             }
-        } else {
-            //todo sendQueryGETwithAuth ???
-            return sendQueryGET(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset);
+        }else{
+            throw new SparqlClientException(this,"The endpoint for reading is not defined.");
         }
     }
 
     public SparqlResult queryUpdate(String query, MimeType typeOutput, String typeCharset) throws SparqlClientException {
-        if (_methodHTTPRead == Method.POST) {
-            if (_endpointWrite != null) {
+        if (_endpointWrite != null) {
+            if (_methodHTTPWrite == Method.POST) {
                 if (_login != null && _password != null) {
                     return sendQueryPOSTwithAuth(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset, _login, _password);
                 } else {
                     return sendQueryPOST(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset);
                 }
-            }else{
-                throw new SparqlClientException(this,"The endpoint for writing is not defined.");
+            } else {
+                //todo sendQueryGETwithAuth ???
+                return sendQueryGET(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset);
             }
-        } else {
-            //todo sendQueryGETwithAuth ???
-            return sendQueryGET(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset);
+        }else{
+            throw new SparqlClientException(this,"The endpoint for writing is not defined.");
         }
     }
 
