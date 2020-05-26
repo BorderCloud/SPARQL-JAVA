@@ -17,7 +17,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile "com.bordercloud:SPARQL-JAVA:1.0.7"
+    compile "com.bordercloud:SPARQL-JAVA:[1.0,)"
 }
 ```
 
