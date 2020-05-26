@@ -452,8 +452,11 @@ public final class SparqlClient {
                     return sendQueryPOST(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset);
                 }
             } else {
-                //todo sendQueryGETwithAuth ???
-                return sendQueryGET(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset);
+                if (_login != null && _password != null) {
+                    return sendQueryGET(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset, _login, _password);
+                } else {
+                    return sendQueryGET(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset);
+                }
             }
         }else{
             throw new SparqlClientException(this,"The endpoint for reading is not defined.");
@@ -469,8 +472,11 @@ public final class SparqlClient {
                     return sendQueryPOST(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset);
                 }
             } else {
-                //todo sendQueryGETwithAuth ???
-                return sendQueryGET(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset);
+                if (_login != null && _password != null) {
+                    return sendQueryGET(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset, _login, _password);
+                } else {
+                    return sendQueryGET(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset);
+                }
             }
         }else{
             throw new SparqlClientException(this,"The endpoint for writing is not defined.");
@@ -478,17 +484,33 @@ public final class SparqlClient {
     }
 
     private SparqlResult sendQueryGET(
+        URI endpoint,
+        String nameParameter,
+        String query,
+        MimeType typeOutput,
+        String typeCharset)
+            throws SparqlClientException {
+        return sendQueryGET(endpoint, nameParameter, query, typeOutput, typeCharset, null,null );
+    }
+
+    private SparqlResult sendQueryGET(
             URI endpoint,
             String nameParameter,
             String query,
             MimeType typeOutput,
-            String typeCharset)
+            String typeCharset,
+            String login,
+            String password)
             throws SparqlClientException{
         SparqlResult result = new SparqlResult();
         try {
             final URIBuilder uriBuilder = new URIBuilder(endpoint);
             uriBuilder.setCharset(Charset.forName(typeCharset));
             uriBuilder.addParameter(nameParameter,query);
+            if (login != null && password != null) {
+                uriBuilder.setUserInfo(login,password);
+            }
+            
             URI url = uriBuilder.build();
 
             CloseableHttpClient httpclient = HttpClients.custom()
