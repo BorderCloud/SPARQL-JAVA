@@ -5,7 +5,7 @@ plugins {
 
 group 'com.bordercloud'
 archivesBaseName = 'SPARQL-JAVA'
-version '1.0.8'
+version '1.0.9'
 
 apply plugin: 'idea'
 apply plugin: 'java'
@@ -19,6 +19,7 @@ targetCompatibility = 1.8
 
 dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5.12'
+    //compile 'org.apache.httpcomponents:httpasyncclient:4.1.4'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.2'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.2'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.2'

@@ -45,7 +45,7 @@ public class ParserSparqlResultHandler  extends DefaultHandler {
             _result = new HashMap();
         }
 
-    HashMap<String, Object> getResult() {
+    public HashMap<String, Object> getResult() {
         return _result;
     }
 
