@@ -3,7 +3,7 @@
 # SPARQL-JAVA
 Client SPARQL 1.1 (very simple) for Java
 
-Usage with Gradle :
+Usage with Gradle:
 ``` gradle
 apply plugin: 'java'
 apply plugin: 'application'
@@ -21,7 +21,7 @@ dependencies {
 }
 ```
 
-Example 1 with Wikidata :
+Example 1 with Wikidata:
 ``` java
 import com.bordercloud.sparql.*;
 
@@ -57,7 +57,7 @@ public class Main {
 }
 ```
 
-Example 2 with Wikidata :
+Example 2 with Wikidata:
 ``` java
 import com.bordercloud.sparql.*;
 
@@ -128,7 +128,7 @@ public class Main {
 }
 ```
 
-Example for writing in a Virtuoso database : 
+Example for writing in a Virtuoso database: 
 ``` java
 endpoint = new URI("http://172.17.0.2:8890/sparql-auth/");
 client= new SparqlClient(false);
