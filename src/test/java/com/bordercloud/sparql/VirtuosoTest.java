@@ -1,5 +1,6 @@
 package com.bordercloud.sparql;
 
+import com.bordercloud.sparql.authorization.basic.HTTPBasicAuthSettings;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,8 +22,10 @@ public class VirtuosoTest {
     public void setUp() throws SparqlClientException, URISyntaxException {
         endpoint = new URI("http://172.17.0.2:8890/sparql-auth/");
         client= new SparqlClient(false);
-        client.setLogin("dba");
-        client.setPassword("dba");
+        HTTPBasicAuthSettings auth = new HTTPBasicAuthSettings();
+        auth.setLogin("dba");
+        auth.setPassword("dba");
+        client.setAuthorizationSettings(auth);
         client.setEndpointRead(endpoint);
         client.setEndpointWrite(endpoint);
         //check delete
@@ -41,7 +44,7 @@ public class VirtuosoTest {
 
     @Test
     public void queryWriteVirtuosoWithAuth_POST_XML() throws URISyntaxException, SparqlClientException {
-        URI endpoint = new URI("http://database-test:8890/sparql-auth");
+        URI endpoint = new URI("http://172.17.0.2:8890/sparql-auth");
         String queryInsert = "INSERT DATA " +
                 " {GRAPH <http://example.com/MyGraph>  " +
                 "   {             " +
@@ -49,8 +52,10 @@ public class VirtuosoTest {
                 "    }   " +
                 "}";
         SparqlClient sc = new SparqlClient(false);
-        sc.setLogin("dba");
-        sc.setPassword("dba");
+        HTTPBasicAuthSettings auth = new HTTPBasicAuthSettings();
+        auth.setLogin("dba");
+        auth.setPassword("dba");
+        sc.setAuthorizationSettings(auth);
         sc.setEndpointRead(endpoint);
         sc.setEndpointWrite(endpoint);
         SparqlResult sr1 = sc.query(queryInsert);
@@ -70,7 +75,7 @@ public class VirtuosoTest {
     @Test
     public void testError_endpointwrite() throws URISyntaxException {
         try {
-            URI endpoint = new URI("http://database-test:8890/sparql-auth");
+            URI endpoint = new URI("http://172.17.0.2:8890/sparql-auth");
             String queryInsert = "INSERT DATA "+
                     " {GRAPH <http://example.com/MyGraph>  "+
                     "   {             "+
@@ -78,8 +83,10 @@ public class VirtuosoTest {
                     "    }   "+
                     "}";
             SparqlClient sc = new SparqlClient(false);
-            sc.setLogin("dba");
-            sc.setPassword("dba");
+            HTTPBasicAuthSettings auth = new HTTPBasicAuthSettings();
+            auth.setLogin("dba");
+            auth.setPassword("dba");
+            sc.setAuthorizationSettings(auth);
             sc.setEndpointRead(endpoint);
             SparqlResult sr1 = sc.query(queryInsert);
             sc.printLastQueryAndResult();
@@ -172,7 +179,7 @@ public class VirtuosoTest {
             SparqlResult res = client.query(q);
             client.printLastQueryAndResult();
         } catch (SparqlClientException e) {
-            e.printStackTrace();
+            e.printStackTrace();            
             Pattern p = Pattern.compile(".*Virtuoso 37000 Error SP030: SPARQL compiler, line 1: syntax error at 'se' before '\\*'.*",Pattern.CASE_INSENSITIVE+Pattern.DOTALL) ;
             Matcher m = p.matcher(e.getMessage()) ;
             
@@ -212,7 +219,10 @@ public class VirtuosoTest {
                     "                    a:A b:Name \"Test2\" .\n" +
                     "                    a:A b:Name \"Test3\" .\n" +
                     "        }}";
-            client.setPassword("pipo");
+            HTTPBasicAuthSettings auth = new HTTPBasicAuthSettings();
+            auth.setLogin("dba");
+            auth.setPassword("pipo");
+            client.setAuthorizationSettings(auth);
             SparqlResult res = client.query(q);
 
             client.printLastQueryAndResult();
@@ -223,7 +233,7 @@ public class VirtuosoTest {
 
     @Test
     public void modelXMLAndJson() throws URISyntaxException, SparqlClientException {
-        URI endpoint = new URI("http://database-test:8890/sparql-auth");
+        URI endpoint = new URI("http://172.17.0.2:8890/sparql-auth");
         String queryInsert = "INSERT DATA " +
                 " {GRAPH <http://example.com/MyGraph2>  " +
                 "   {             " +
@@ -231,8 +241,10 @@ public class VirtuosoTest {
                 "    }   " +
                 "}";
         SparqlClient sc = new SparqlClient(false);
-        sc.setLogin("dba");
-        sc.setPassword("dba");
+        HTTPBasicAuthSettings auth = new HTTPBasicAuthSettings();
+        auth.setLogin("dba");
+        auth.setPassword("dba");
+        sc.setAuthorizationSettings(auth);
         sc.setEndpointRead(endpoint);
         sc.setEndpointWrite(endpoint);
         String qDelete = " CLEAR GRAPH <http://example.com/MyGraph2>";

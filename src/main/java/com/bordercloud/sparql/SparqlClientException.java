@@ -1,5 +1,6 @@
 package com.bordercloud.sparql;
 
+import jdk.jfr.StackTrace;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,6 +23,14 @@ public class SparqlClientException extends Exception {
             String message
     ) {
         super(message);
+        _sparqlClient = sparqlClient;
+    }
+    public SparqlClientException(
+            SparqlClient sparqlClient,
+            String message,
+            Throwable cause
+    ) {
+        super(message,cause);
         _sparqlClient = sparqlClient;
     }
     

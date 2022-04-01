@@ -132,8 +132,10 @@ Example for writing in a Virtuoso database:
 ``` java
 endpoint = new URI("http://172.17.0.2:8890/sparql-auth/");
 client= new SparqlClient(false);
-client.setLogin("dba");
-client.setPassword("dba");
+HTTPBasicAuthSettings auth = new HTTPBasicAuthSettings();
+auth.setLogin("dba");
+auth.setPassword("dba");
+sc.setAuthorizationSettings(auth);
 client.setEndpointRead(endpoint);
 client.setEndpointWrite(endpoint);
 //check delete
@@ -148,6 +150,26 @@ String q =
         "}}";
 
 SparqlResult sr1 = client.query(q);
+```
+
+You can use also the OAuth2 Client Credentials with other databases:
+``` java
+SparqlClient sc = new SparqlClient(false);
+OAuth2ClientCredentielsSettings auth = new OAuth2ClientCredentielsSettings();
+auth.accessTokenURL = OAUTH_ACCESS_TOKEN_URL;
+auth.setClientID(OAUTH_CLIENT_ID);
+auth.setClientSecret(OAUTH_CLIENT_SECRET);
+sc.setAuthorizationSettings(auth);
+```
+or OAuth2 Password Grant:
+``` java
+SparqlClient sc = new SparqlClient(false);
+OAuth2PasswordGrantSettings auth = new OAuth2PasswordGrantSettings();
+auth.accessTokenURL = OAUTH_ACCESS_TOKEN_URL;
+auth.setClientID(OAUTH_CLIENT_ID);
+auth.setUsername(OAUTH_USERNAME);
+auth.setPassword(OAUTH_PASSWORD);
+sc.setAuthorizationSettings(auth);
 ```
 
 See more examples with DBpedia and Wikidata in the tests.

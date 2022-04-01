@@ -1,5 +1,6 @@
 package com.bordercloud.sparql;
 
+import com.bordercloud.sparql.authorization.basic.HTTPBasicAuthSettings;
 import org.junit.Test;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -62,7 +63,7 @@ public class SparqlClientTest  {
 
     @Test
     public void queryReadDbpedia_POST_XML() throws URISyntaxException, SparqlClientException {
-        URI endpoint = new URI("http://dbpedia.org/sparql");
+        URI endpoint = new URI("https://dbpedia.org/sparql");
         String querySelect = "SELECT *  where { ?x ?y ?z .} LIMIT 5";
         SparqlClient sc = new SparqlClient(false);
         sc.setEndpointRead(endpoint);
@@ -86,7 +87,16 @@ public class SparqlClientTest  {
 
     @Test
     public void testSetterAndGetter() throws URISyntaxException, SparqlClientException {
+        HTTPBasicAuthSettings auth = new HTTPBasicAuthSettings();
+        auth.setLogin("toto");
+        auth.setPassword("pass");
+        
         SparqlClient sc = new SparqlClient();
+        
+        sc.setAuthorizationSettings(auth);
+        assertEquals(((HTTPBasicAuthSettings) sc.getAuthorizationSettings()).getLogin(),"toto");
+        assertEquals(((HTTPBasicAuthSettings) sc.getAuthorizationSettings()).getPassword(),"pass");        
+        
         sc.setMethodHTTPRead(Method.GET);
         assertEquals(sc.getMethodHTTPRead(), Method.GET);
 
@@ -98,13 +108,7 @@ public class SparqlClientTest  {
 
         sc.setEndpointWrite(new URI("https://query.truc.org/sparql_auth"));
         assertEquals(sc.getEndpointWrite(),new URI("https://query.truc.org/sparql_auth"));
-
-        sc.setLogin("toto");
-        assertEquals(sc.getLogin(),"toto");
-
-        sc.setPassword("pass");
-        assertEquals(sc.getPassword(),"pass");
-
+        
         sc.setNameParameterQueryRead("paramRead");
         assertEquals(sc.getNameParameterQueryRead(),"paramRead");
 
@@ -116,6 +120,10 @@ public class SparqlClientTest  {
 
         sc.setProxyPort(1234);
         assertEquals(sc.getProxyPort(),1234);
+        
+        assertEquals(sc.getUserAgent(),"BorderCloud/Sparql-JAVA 1");
+        sc.setUserAgent("test");
+        assertEquals(sc.getUserAgent(),"test");
     }
 
     @Test
@@ -136,5 +144,4 @@ public class SparqlClientTest  {
             assertTrue("The error message doesn't match", m.matches());
         }
     }
-
 }

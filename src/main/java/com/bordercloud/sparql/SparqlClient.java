@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -13,13 +14,19 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.bordercloud.sparql.authorization.AuthorizationSettings;
+import com.bordercloud.sparql.authorization.NoAuthSettings;
+import com.bordercloud.sparql.authorization.basic.HTTPBasicAuthSettings;
+import com.bordercloud.sparql.authorization.oauth2.OAuth2ClientCredentielsSettings;
+import com.bordercloud.sparql.authorization.oauth2.OAuth2PasswordGrantSettings;
+import com.bordercloud.sparql.authorization.oauth2.OAuth2Settings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
@@ -38,7 +45,6 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author Karima Rafes.
  */
-
 public final class SparqlClient {
 
     private SparqlResult _result = null;
@@ -47,58 +53,60 @@ public final class SparqlClient {
     private HttpUriRequest _lastHTTPRequest = null;
     private CloseableHttpResponse _lastHTTPResponse = null;
 
-    private String _userAgent = "BorderCloud/Sparql-JAVA 2.0";
+    private String _userAgent = "BorderCloud/Sparql-JAVA 1";
 
     /**
      * URL of Endpoint to read
      */
-    public URI _endpointRead = null;
+    private URI _endpointRead = null;
 
     /**
      * URL of Endpoint to write
      */
-    public URI _endpointWrite = null;
+    private URI _endpointWrite = null;
 
     /**
      * in the constructor set debug to true in order to get usefull output
      */
-    public boolean _debug = false;
+    private boolean _debug = false;
 
     /**
      * in the constructor set the proxy_host if necessary
      */
-    public String _proxyHost = null;
+    private String _proxyHost = null;
 
     /**
      * in the constructor set the proxy_port if necessary
      */
-    public int _proxyPort = 0;
+    private int _proxyPort = 0;
 
     /**
      * Parser of XML result
      */
-    public ParserSparqlResultHandler _parserSparqlResult = null;
+    private ParserSparqlResultHandler _parserSparqlResult = null;
 
     /**
      * Name of parameter HTTP to send a query Sparql to read data.
      */
-    public String _nameParameterQueryRead = null;
+    private String _nameParameterQueryRead = null;
 
     /**
      * Name of parameter HTTP to send a query Sparql to write data.
      */
-    public String _nameParameterQueryWrite = null;
+    private String _nameParameterQueryWrite = null;
 
     /**
      * Method HTTP to send a query Sparql to read data.
      */
-    public Method _methodHTTPRead = null;
+    private Method _methodHTTPRead = null;
 
-    public Method _methodHTTPWrite = null;
+    private Method _methodHTTPWrite = null;
 
-    public String _login = null;
+//    public String _login = null;
+//
+//    public String _password = null;
 
-    public String _password = null;
+    private AuthorizationSettings _authorizationSettings;
 
     private SAXParser _parser;
     private DefaultHandler _handler;
@@ -174,7 +182,9 @@ public final class SparqlClient {
         this._methodHTTPWrite = Method.POST;
         this._nameParameterQueryRead = "query";
         this._nameParameterQueryWrite = "update";
-
+        
+        this._authorizationSettings = new NoAuthSettings();
+        
         // init parser
         this._parserSparqlResult = new ParserSparqlResultHandler();
 
@@ -277,20 +287,20 @@ public final class SparqlClient {
         return this._nameParameterQueryRead;
     }
 
-    public void setLogin(String login) {
-        this._login = login;
+    public void setAuthorizationSettings(AuthorizationSettings settings) {
+        this._authorizationSettings = settings;
     }
 
-    public String getLogin() {
-        return this._login;
+    public AuthorizationSettings getAuthorizationSettings() {
+        return this._authorizationSettings ;
     }
 
-    public void setPassword(String password) {
-        this._password = password;
+    public void setUserAgent(String userAgent) {
+        this._userAgent = userAgent;
     }
 
-    public String getPassword() {
-        return this._password;
+    public String getUserAgent() {
+        return this._userAgent;
     }
 
     /**
@@ -446,17 +456,9 @@ public final class SparqlClient {
     public SparqlResult queryRead(String query, MimeType typeOutput, String typeCharset) throws SparqlClientException {
         if (_endpointRead != null) {
             if (_methodHTTPRead == Method.POST) {
-                if (_login != null && _password != null) {
-                    return sendQueryPOSTwithAuth(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset, _login, _password);
-                } else {
-                    return sendQueryPOST(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset);
-                }
+                return sendQueryPOST(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset, _authorizationSettings);
             } else {
-                if (_login != null && _password != null) {
-                    return sendQueryGET(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset, _login, _password);
-                } else {
-                    return sendQueryGET(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset);
-                }
+                return sendQueryGET(_endpointRead, _nameParameterQueryRead, query,typeOutput, typeCharset, _authorizationSettings);
             }
         }else{
             throw new SparqlClientException(this,"The endpoint for reading is not defined.");
@@ -466,17 +468,9 @@ public final class SparqlClient {
     public SparqlResult queryUpdate(String query, MimeType typeOutput, String typeCharset) throws SparqlClientException {
         if (_endpointWrite != null) {
             if (_methodHTTPWrite == Method.POST) {
-                if (_login != null && _password != null) {
-                    return sendQueryPOSTwithAuth(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset, _login, _password);
-                } else {
-                    return sendQueryPOST(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset);
-                }
+                return sendQueryPOST(_endpointWrite, _nameParameterQueryWrite, query, typeOutput, typeCharset, _authorizationSettings);
             } else {
-                if (_login != null && _password != null) {
-                    return sendQueryGET(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset, _login, _password);
-                } else {
-                    return sendQueryGET(_endpointWrite, _nameParameterQueryWrite, query,typeOutput, typeCharset);
-                }
+                return sendQueryGET(_endpointWrite, _nameParameterQueryWrite, query, typeOutput, typeCharset, _authorizationSettings);
             }
         }else{
             throw new SparqlClientException(this,"The endpoint for writing is not defined.");
@@ -488,65 +482,84 @@ public final class SparqlClient {
         String nameParameter,
         String query,
         MimeType typeOutput,
-        String typeCharset)
+        String typeCharset,
+        AuthorizationSettings settings)
             throws SparqlClientException {
-        return sendQueryGET(endpoint, nameParameter, query, typeOutput, typeCharset, null,null );
+        SparqlResult result = new SparqlResult();
+        if( settings instanceof NoAuthSettings || settings instanceof HTTPBasicAuthSettings) {
+            result = sendQueryGETNoAuthAndHTTPBasicAuth(endpoint, nameParameter, query, typeOutput, typeCharset, settings );
+        } else if( settings instanceof OAuth2ClientCredentielsSettings || settings instanceof OAuth2PasswordGrantSettings) {
+            result = sendQueryGET(endpoint, nameParameter, query, typeOutput, typeCharset, (OAuth2Settings) settings );
+//        } else if( settings instanceof OAuthPasswordGrantSettings) {
+//            result = sendQueryGET(endpoint, nameParameter, query, typeOutput, typeCharset, (OAuthPasswordGrantSettings) settings );
+        } else {
+            throw new SparqlClientException(this,"This authorization type is not implemented.");
+        }
+        return result;
     }
-
-    private SparqlResult sendQueryGET(
+    private SparqlResult sendQueryPOST(
             URI endpoint,
             String nameParameter,
             String query,
             MimeType typeOutput,
             String typeCharset,
-            String login,
-            String password)
+            AuthorizationSettings settings)
+            throws SparqlClientException {
+        SparqlResult result = new SparqlResult();
+        if( settings instanceof NoAuthSettings ) {
+            result = sendQueryPOST(endpoint, nameParameter, query, typeOutput, typeCharset, (NoAuthSettings) settings );
+        } else if( settings instanceof HTTPBasicAuthSettings) {
+            result = sendQueryPOST(endpoint, nameParameter, query, typeOutput, typeCharset, (HTTPBasicAuthSettings) settings );
+        } else if( settings instanceof OAuth2ClientCredentielsSettings || settings instanceof OAuth2PasswordGrantSettings) {
+            result = sendQueryPOST(endpoint, nameParameter, query, typeOutput, typeCharset, (OAuth2ClientCredentielsSettings) settings );
+//        } else if( settings instanceof OAuthPasswordGrantSettings) {
+//            result = sendQueryPOST(endpoint, nameParameter, query, typeOutput, typeCharset, (OAuthPasswordGrantSettings) settings );
+        } else {
+            throw new SparqlClientException(this,"This authorization type is not implemented.");
+        }
+        return result;
+    }
+    
+    //region sendQueryGET
+    private SparqlResult sendQueryGETNoAuthAndHTTPBasicAuth(
+            URI endpoint,
+            String nameParameter,
+            String query,
+            MimeType typeOutput,
+            String typeCharset,
+            AuthorizationSettings settings)
             throws SparqlClientException{
         SparqlResult result = new SparqlResult();
         try {
             final URIBuilder uriBuilder = new URIBuilder(endpoint);
             uriBuilder.setCharset(Charset.forName(typeCharset));
             uriBuilder.addParameter(nameParameter,query);
-            if (login != null && password != null) {
-                uriBuilder.setUserInfo(login,password);
+            if (settings instanceof HTTPBasicAuthSettings) {
+                uriBuilder.setUserInfo(((HTTPBasicAuthSettings) settings).getLogin(),((HTTPBasicAuthSettings) settings).getPassword());
             }
-            
+
             URI url = uriBuilder.build();
 
-            CloseableHttpClient httpclient = HttpClients.custom()
-                    .setDefaultRequestConfig(RequestConfig.custom()
-                            // Waiting for a connection from connection manager
-                            .setConnectionRequestTimeout(10000)
-                            // Waiting for connection to establish
-                            .setConnectTimeout(60000)
-                            .setExpectContinueEnabled(false)
-                            // Waiting for data
-                            .setSocketTimeout(60000)
-                            .setCookieSpec("easy")
-                            .build())
-                    .setMaxConnPerRoute(20)
-                    .setMaxConnTotal(100)
-                    .build();
+            CloseableHttpClient httpclient = Network.getCloseableHttpClient(null);
 
             try {
                 HttpGet httpget = new HttpGet(url);
-
-                httpget.setHeader("Accept", typeOutput.getMimetype());
-                httpget.setHeader("Accept-Charset", typeCharset);
-                httpget.setHeader("User-Agent", _userAgent);
+                buildHTTPHeader(httpget, typeOutput, typeCharset,null, null);
                 _lastHTTPRequest = httpget;
 
                 //System.out.println("Executing request " + httpget.getRequestLine());
                 _lastHTTPResponse = httpclient.execute(_lastHTTPRequest);
                 try {
                     int statusCode = _lastHTTPResponse.getStatusLine().getStatusCode();
-                    HttpEntity entity = _lastHTTPResponse.getEntity();
 
                     //System.out.println("----------------------------------------");
                     //System.out.println(response.getStatusLine());
-                    result.resultRaw = EntityUtils.toString(entity,typeCharset);
-                    result.accept = typeOutput;
+                    if ( statusCode != 204) { //no content
+                        HttpEntity entity = _lastHTTPResponse.getEntity();
+                        result.resultRaw = EntityUtils.toString(entity,typeCharset);
+                    }
                     //EntityUtils.consume(entity);
+                    result.accept = typeOutput;
 
                     if ( statusCode < 200 || statusCode >= 300) {
                         _result = result;
@@ -573,15 +586,92 @@ public final class SparqlClient {
         }
         return result;
     }
-
-    private SparqlResult sendQueryPOSTwithAuth(
+    
+    private SparqlResult sendQueryGET(
             URI endpoint,
             String nameParameter,
             String query,
             MimeType typeOutput,
             String typeCharset,
-             String login,
-             String password)
+            OAuth2Settings settings)
+            throws SparqlClientException{
+        SparqlResult result = new SparqlResult();
+        
+        try {
+            final String token = settings.getToken(this);
+            final URIBuilder uriBuilder = new URIBuilder(endpoint);
+            uriBuilder.setCharset(Charset.forName(typeCharset));
+            uriBuilder.addParameter(nameParameter,query);
+
+            URI url = uriBuilder.build();
+            CloseableHttpClient httpclient = Network.getCloseableHttpClient(null);
+
+            try {
+                HttpGet httpget = new HttpGet(url);
+
+                buildHTTPHeader(httpget, typeOutput, typeCharset,settings.headerPrefix, token);
+                _lastHTTPRequest = httpget;
+
+                //System.out.println("Executing request " + httpget.getRequestLine());
+                _lastHTTPResponse = httpclient.execute(_lastHTTPRequest);
+                try {
+                    int statusCode = _lastHTTPResponse.getStatusLine().getStatusCode();
+
+                    //System.out.println("----------------------------------------");
+                    //System.out.println(response.getStatusLine());
+                    if ( statusCode != 204) { //no content
+                        HttpEntity entity = _lastHTTPResponse.getEntity();
+                        result.resultRaw = EntityUtils.toString(entity,typeCharset);
+                    }
+                    //EntityUtils.consume(entity);
+                    result.accept = typeOutput;
+
+                    if ( statusCode < 200 || statusCode >= 300) {
+                        _result = result;
+                        if ( OAuth2Settings.isInvalidToken(_lastHTTPResponse)) {
+                            settings.refreshToken(this);
+                            return sendQueryGET(
+                                    endpoint,
+                                    nameParameter,
+                                    query,
+                                    typeOutput,
+                                    typeCharset,
+                                    settings);
+                        }
+                        throw new SparqlClientException(this,
+                                _lastHTTPResponse.getStatusLine().toString()
+                        );
+                    }
+                }
+                finally {
+                    _lastHTTPResponse.close();
+                }
+            }
+            finally {
+                httpclient.close();
+            }
+        }
+        catch (IOException | URISyntaxException e) {
+//        System.out.println(e.getMessage());
+//        e.printStackTrace();
+            _result = result;
+            throw new SparqlClientException(
+                    this,
+                    e.getMessage());
+        }
+        return result;
+    }
+
+    //endregion
+    // region sendQueryPOST
+
+    private SparqlResult sendQueryPOST(
+            URI endpoint,
+            String nameParameter,
+            String query,
+            MimeType typeOutput,
+            String typeCharset,
+            HTTPBasicAuthSettings settings)
             throws SparqlClientException
     {
         SparqlResult result = new SparqlResult();
@@ -589,29 +679,11 @@ public final class SparqlClient {
             CredentialsProvider credsProvider = new BasicCredentialsProvider();
             credsProvider.setCredentials(
                     new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
-                    new UsernamePasswordCredentials(login, password));
-
-            CloseableHttpClient httpclient = HttpClients.custom()
-                    .setDefaultCredentialsProvider(credsProvider)
-                    .setRedirectStrategy(new LaxRedirectStrategy())
-                    .setDefaultRequestConfig(RequestConfig.custom()
-                            // Waiting for a connection from connection manager
-                            .setConnectionRequestTimeout(10000)
-                            // Waiting for connection to establish
-                            .setConnectTimeout(60000)
-                            .setExpectContinueEnabled(false)
-                            // Waiting for data
-                            .setSocketTimeout(60000)
-                            .setCookieSpec("easy")
-                            .build())
-                    .setMaxConnPerRoute(20)
-                    .setMaxConnTotal(100)
-                    .build();
+                    new UsernamePasswordCredentials(settings.getLogin(), settings.getPassword()));
+            CloseableHttpClient httpclient = Network.getCloseableHttpClient(credsProvider);
             try {
                 HttpPost httpPost = new HttpPost(endpoint);
-                httpPost.setHeader("Accept", typeOutput.getMimetype());
-                httpPost.setHeader("Accept-Charset", typeCharset);
-                httpPost.setHeader("User-Agent", _userAgent);
+                buildHTTPHeader(httpPost, typeOutput, typeCharset,null, null);
                 List <NameValuePair> nvps = new ArrayList <NameValuePair>();
                 nvps.add(new BasicNameValuePair(nameParameter, query));
                 httpPost.setEntity(new UrlEncodedFormEntity(nvps,typeCharset));
@@ -620,8 +692,10 @@ public final class SparqlClient {
                 _lastHTTPResponse = httpclient.execute(_lastHTTPRequest);
                 try {
                     int statusCode = _lastHTTPResponse.getStatusLine().getStatusCode();
-                    HttpEntity entity = _lastHTTPResponse.getEntity();
-                    result.resultRaw = EntityUtils.toString(entity,typeCharset);
+                    if ( statusCode != 204) { //no content
+                        HttpEntity entity = _lastHTTPResponse.getEntity();
+                        result.resultRaw = EntityUtils.toString(entity,typeCharset);
+                    }
                     result.accept = typeOutput;
 
                     if ( statusCode < 200 || statusCode >= 300) {
@@ -656,31 +730,16 @@ public final class SparqlClient {
             String nameParameter,
             String query,
             MimeType typeOutput,
-            String typeCharset)
+            String typeCharset,
+            NoAuthSettings settings)
             throws SparqlClientException
     {
         SparqlResult result = new SparqlResult();
         try {
-            CloseableHttpClient httpclient = HttpClients.custom()
-                    .setRedirectStrategy(new LaxRedirectStrategy())
-                    .setDefaultRequestConfig(RequestConfig.custom()
-                            // Waiting for a connection from connection manager
-                            .setConnectionRequestTimeout(10000)
-                            // Waiting for connection to establish
-                            .setConnectTimeout(60000)
-                            .setExpectContinueEnabled(false)
-                            // Waiting for data
-                            .setSocketTimeout(60000)
-                            .setCookieSpec("easy")
-                            .build())
-                    .setMaxConnPerRoute(20)
-                    .setMaxConnTotal(100)
-                    .build();
+            CloseableHttpClient httpclient = Network.getCloseableHttpClient(null);
             try {
                 HttpPost httpPost = new HttpPost(endpoint);
-                httpPost.setHeader("Accept", typeOutput.getMimetype());
-                httpPost.setHeader("Accept-Charset", typeCharset);
-                httpPost.setHeader("User-Agent", _userAgent);
+                buildHTTPHeader(httpPost, typeOutput, typeCharset,null, null);
                 List <NameValuePair> nvps = new ArrayList <NameValuePair>();
                 nvps.add(new BasicNameValuePair(nameParameter, query));
                 httpPost.setEntity(new UrlEncodedFormEntity(nvps,typeCharset));
@@ -689,8 +748,10 @@ public final class SparqlClient {
                 _lastHTTPResponse = httpclient.execute(_lastHTTPRequest);
                 try {
                     int statusCode = _lastHTTPResponse.getStatusLine().getStatusCode();
-                    HttpEntity entity = _lastHTTPResponse.getEntity();
-                    result.resultRaw = EntityUtils.toString(entity,typeCharset);
+                    if ( statusCode != 204) { //no content
+                        HttpEntity entity = _lastHTTPResponse.getEntity();
+                        result.resultRaw = EntityUtils.toString(entity,typeCharset);
+                    }
                     result.accept = typeOutput;
 
                     if ( statusCode < 200 || statusCode >= 300) {
@@ -716,6 +777,84 @@ public final class SparqlClient {
         }
         return result;
     }
+
+
+    private SparqlResult sendQueryPOST(
+            URI endpoint,
+            String nameParameter,
+            String query,
+            MimeType typeOutput,
+            String typeCharset,
+            OAuth2Settings settings
+            )
+            throws SparqlClientException
+    {
+        SparqlResult result = new SparqlResult();
+        try {
+            CloseableHttpClient httpclient = Network.getCloseableHttpClient(null);
+            try {
+                HttpPost httpPost = new HttpPost(endpoint);
+                String token = settings.getToken(this);
+                buildHTTPHeader(httpPost, typeOutput, typeCharset,settings.headerPrefix, token);
+                List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+                nvps.add(new BasicNameValuePair(nameParameter, query));
+                httpPost.setEntity(new UrlEncodedFormEntity(nvps,typeCharset));
+                _lastHTTPRequest = httpPost;
+
+                _lastHTTPResponse = httpclient.execute(_lastHTTPRequest);
+                try {
+                    int statusCode = _lastHTTPResponse.getStatusLine().getStatusCode();
+                    if ( statusCode != 204) { //no content
+                        HttpEntity entity = _lastHTTPResponse.getEntity();
+                        result.resultRaw = EntityUtils.toString(entity,typeCharset);
+                    }
+                    result.accept = typeOutput;
+
+                    if ( statusCode < 200 || statusCode >= 300) {
+                        _result = result;
+                        if ( OAuth2Settings.isInvalidToken(_lastHTTPResponse)) {
+                                settings.refreshToken(this);
+                                return sendQueryPOST(
+                                        endpoint,
+                                         nameParameter,
+                                         query,
+                                         typeOutput,
+                                         typeCharset,
+                                         settings
+                                );
+                        }
+                        throw new SparqlClientException(this,
+                                _lastHTTPResponse.getStatusLine().toString()
+                        );
+                    }
+                }
+                finally {
+                    _lastHTTPResponse.close();
+                }
+            }
+            finally {
+                httpclient.close();
+            }
+        }
+        catch (IOException e) {
+            _result = result;
+            throw new SparqlClientException(
+                    this,
+                    e.getMessage());
+        }
+        return result;
+    }
+    
+    private void buildHTTPHeader(HttpRequestBase httpBase, MimeType typeOutput, String typeCharset, String headerPrefixToken, String token) {
+        httpBase.setHeader("Accept", typeOutput.getMimetype());
+        httpBase.setHeader("Accept-Charset", typeCharset);
+        httpBase.setHeader("User-Agent", _userAgent);
+        if(token != null) {
+            httpBase.setHeader("Authorization", headerPrefixToken + " " + token);
+        }
+    }
+
+    //endregion
 
     public void printLastQueryAndResult() {
         SparqlClient.printLastQueryAndResult(this);

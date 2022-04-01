@@ -1,5 +1,12 @@
 package com.bordercloud.sparql;
 
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.LaxRedirectStrategy;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -38,5 +45,27 @@ public class Network {
         } catch (IOException e) {
             return false; // Either timeout or unreachable or failed DNS lookup.
         }
+    }
+
+    public static CloseableHttpClient getCloseableHttpClient(CredentialsProvider credsProvider) {
+        HttpClientBuilder httpclientBuilder = HttpClients.custom();
+        if (credsProvider != null) {
+            httpclientBuilder.setDefaultCredentialsProvider(credsProvider);
+        }
+        CloseableHttpClient httpclient =  httpclientBuilder.setRedirectStrategy(new LaxRedirectStrategy())
+                .setDefaultRequestConfig(RequestConfig.custom()
+                        // Waiting for a connection from connection manager
+                        .setConnectionRequestTimeout(10000)
+                        // Waiting for connection to establish
+                        .setConnectTimeout(60000)
+                        .setExpectContinueEnabled(false)
+                        // Waiting for data
+                        .setSocketTimeout(60000)
+                        .setCookieSpec("easy")
+                        .build())
+                .setMaxConnPerRoute(20)
+                .setMaxConnTotal(100)
+                .build();
+        return httpclient;
     }
 }
